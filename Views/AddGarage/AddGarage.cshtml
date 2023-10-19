@@ -1,0 +1,74 @@
+﻿@model GSL.Models.GarageModel
+
+<div class="container">
+    @*@if (@TempData["FilteredAlerts"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["FilteredAlerts"] <strong>Sell Start now !</strong>
+        </div>
+    }*@
+    <h2>Add New Garage</h2>
+
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    @using (Html.BeginForm("AddGarage", "AddGarage", FormMethod.Post))
+    {
+        <div>
+            <label asp-for="GarageName" style="font-weight: bold; color: palevioletred;">Garage Name: </label>
+            <input asp-for="GarageName" placeholder="Enter your Garage Name" style="color: gray;" />
+        </div>
+
+        <div >
+            <label asp-for="Address" style="font-weight: bold; color: palevioletred; margin-top: 10px;">Address: </label>
+            <input asp-for="Address" placeholder="Enter your Address" style="color: gray;" />
+        </div>
+
+        <div>
+            <label asp-for="City" style="font-weight: bold; color: palevioletred; margin-top: 10px">City: </label>
+            <input asp-for="City" placeholder="Enter your City" style="color: gray;" />
+        </div>
+
+        <div >
+            <label asp-for="State" style="font-weight: bold; color: palevioletred; margin-top: 10px">State: </label>
+            <input asp-for="State" placeholder="Enter your State" style="color: gray;" />
+        </div>
+
+        <div >
+            <label asp-for="Country" style="font-weight: bold; color: palevioletred; margin-top: 10px">Country: </label>
+            <input asp-for="Country" placeholder="Enter your Country" style="color: gray;" />
+        </div>
+
+        <div >
+            <label asp-for="PostalCode" style="font-weight: bold; color: palevioletred; margin-top: 10px">Postal Code: </label>
+            <input asp-for="PostalCode" placeholder="Enter your PostalCode" style="color: gray;" />
+        </div>
+
+        <div>
+            <label asp-for="OwnerName" style="font-weight: bold; color: palevioletred; margin-top: 10px">OwnerName: </label>
+            <input asp-for="OwnerName" placeholder="Enter your Name" style="color: gray;" />
+        </div>
+
+        <div>
+            <label asp-for="OwnerPhoneNumber" style="font-weight: bold; color: palevioletred; margin-top: 10px">OwnerPhoneNumber: </label>
+            <input asp-for="OwnerPhoneNumber" placeholder="Enter your PhoneNumber" style="color: gray;" />
+        </div>
+
+        <button type="submit" style="margin-top: 40px; color: white; background-color: palevioletred; width: 100%; padding: 10px; border: none; border-radius: 7px; font-weight: bold; font-size: 20px;">Add Garage</button>
+    }
+
+    <div style="position: fixed; bottom: 0; width: 100%; background-color: palevioletred">
+        <ul style="list-style-type: none; padding-top: 10px; padding-bottom: 10px; margin: 0; display: flex; justify-content: space-around">
+            <li style="display: inline-block">
+                <a href="@Url.Action("ProviderHome", "ProviderHome")">Home</a>
+            </li>
+            <li style="display: inline-block">
+                <a href="@Url.Action("Profile", "ProviderHome")">Profile</a>
+            </li>
+        </ul>
+    </div>
+</div>

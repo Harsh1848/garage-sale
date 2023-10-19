@@ -1,0 +1,44 @@
+﻿<div class="container">
+    
+    @if (@TempData["FilteredAlerts"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["FilteredAlerts"] <strong>Sell Start now !</strong>
+            @*<button type="button" class="close" id="closeNotification">
+                <span>&times;</span>
+            </button>*@
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    @model GSL.Models.UserRegistrationModel
+    <div class="content-section" id="profile-content">
+        <h1 style="color: palevioletred; text-align:center;">Profile</h1>
+    </div>
+
+    <div style="border: solid; border-color: palevioletred; border-width: 1px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px;">
+        <p><strong style="color: palevioletred; font-size: 17px;">Name:</strong> @Model.Name</p>
+        <p><strong style="color: palevioletred; font-size: 17px;">Email:</strong> @Model.Email</p>
+        <p><strong style="color: palevioletred; font-size: 17px;">Phone Number:</strong> @Model.PhoneNumber</p>
+        <p><strong style="color: palevioletred; font-size: 17px;">Address:</strong> @Model.Address</p>
+        <p><strong style="color: palevioletred; font-size: 17px;">User Type:</strong> @Model.UserType</p>
+
+            @Html.ActionLink("Logout", "Logout", "CustomerHome", null, new { style = "background-color: palevioletred; color: white; padding: 10px; text-decoration: none; border-radius: 10px; margin: 20px; text-align: center; font-size: 20px;" })
+    </div>
+
+    <div style="position: fixed; bottom: 0; width: 100%; background-color: palevioletred">
+        <ul style="list-style-type: none; padding-top: 10px; padding-bottom: 10px; margin: 0; display: flex; justify-content: space-around">
+            <li style="display: inline-block">
+                <a href="@Url.Action("ProviderHome", "ProviderHome")">Home</a>
+            </li>
+            <li style="display: inline-block">
+                <a href="@Url.Action("Profile", "ProviderHome")">Profile</a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,127 @@
+﻿@using System.Globalization
+@model GSL.ViewModel.GarageDetailsViewModel
+
+<div class="container">
+    @*@if (@TempData["AlertAdd"] != null){
+    <div>
+        <strong>Success !</strong> @TempData["AlertAdd"]
+    </div>
+    }*@
+    @*@if (@TempData["FilteredAlerts"] != null)
+    {
+        <div>
+            @TempData["FilteredAlerts"] <strong>Sell Start now !</strong>
+        </div>
+    }*@
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    @if (Model.UserType == "SalesProvider")
+    {
+        <div style="display: flex; justify-content: center; align-items: center;">
+            @Html.ActionLink("Add Item", "AddItem", "AddItem", new { id = Model.GarageId}, new { style = "background-color: palevioletred; color: white; padding: 10px; text-decoration: none; border-radius: 10px; margin: 20px; text-align: center; font-size: 20px;" })
+        </div>
+    }
+
+    <div style="border: solid; border-color: palevioletred; border-width: 1px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px; display:flex; flex-direction: column; font-weight: bold">
+        <label style="color: palevioletred; font-size: 15px;">Garage Name: @Model.Garage.GarageName</label>
+        <label style="color: palevioletred; font-size: 15px;">Garage Address: @Model.Garage.Address</label>
+        <label style="color: palevioletred; font-size: 15px;">Owner Name: @Model.Garage.OwnerName</label>
+        <label style="color: palevioletred; font-size: 15px;">Owner Phone Number: @Model.Garage.OwnerPhoneNumber</label>
+        
+    </div>
+
+    @if (Model.GarageItemList.Any())
+    {
+        @foreach (var item in Model.GarageItemList)
+        {
+            if (item != null)
+            {
+                    <div style="color: palevioletred; font-size: 17px; font-weight: bold; padding: 10px; border: solid; border-color: palevioletred; border-width: 2px; width: 100%; border-radius: 10px; display: block; margin-top: 10px; text-decoration: none;">
+                        <div style="display: flex; justify-content: space-between">
+                            <div>
+                                <label>Item Name: @item.ItemName.ToString()</label>
+                                <div>
+                                    Item Price: @item.ItemPrice
+                                </div>
+                            </div>
+
+                        <label>Selling Date: @item.ItemSellingEndDate</label>
+                        <button style="background-color: palevioletred; color: white; border-radius: 5px; border: none; padding: 5px 15px;" onclick="openAlertPopup('@item.Id', '@item.GarageId')">Get Alert</button>
+                    </div>
+                    </div>
+             
+            }
+        }
+    }
+
+    <div style="position: fixed; bottom: 0; width: 100%; background-color: palevioletred">
+        <ul style="list-style-type: none; padding-top: 10px; padding-bottom: 10px; margin: 0; display: flex; justify-content: space-around">
+            <li style="display: inline-block">
+                <a href="@Url.Action("ProviderHome", "ProviderHome")">Home</a>
+            </li>
+            <li style="display: inline-block">
+                <a href="@Url.Action("Profile", "ProviderHome")">Profile</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Hidden modal dialog -->
+<div id="alertModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 999;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 50px; border-radius: 5px;">
+        <!-- Your alert content goes here -->
+        <p>Are you sure you want to set alert?<span style="display: none;" id="itemIdPlaceholder"></span> <span style="display: none;" id="garageIdPlaceholder"></span></p>
+        <button onclick="closeAlertPopup()">Close</button>
+        <button onclick="addAlert()">Add</button>
+    </div>
+</div>
+
+<script>
+    function openAlertPopup(id, garageId) {
+        // Show the modal dialog
+        document.getElementById("alertModal").style.display = "block";
+        document.getElementById("itemIdPlaceholder").textContent = id;
+        document.getElementById("garageIdPlaceholder").textContent = garageId;
+    }
+
+    function closeAlertPopup() {
+        // Hide the modal dialog
+        document.getElementById("alertModal").style.display = "none";
+    }
+
+    function addAlert() {
+        // Get the item ID from the placeholder
+        var itemId = document.getElementById("itemIdPlaceholder").textContent;
+        var garageId = document.getElementById("garageIdPlaceholder").textContent;
+        var data = {
+            itemId: itemId,
+            garageId: garageId
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Alert/AddAlert", // Replace ControllerName with your actual controller name
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                // Handle the success response
+                console.log("Data added successfully.");
+                swal("Good job!", "Add alert successfully!", "success");
+                // Close the popup
+                closeAlertPopup();
+            },
+            error: function (error) {
+                // Handle errors
+                console.error("Error:", error);
+            }
+        });
+    }
+</script>
+
+

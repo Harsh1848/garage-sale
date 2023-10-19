@@ -1,0 +1,82 @@
+﻿@model GSL.ViewModel.GarageViewModel
+<script>
+    function mapOpen(Address, City, State, Country) {
+        var fulla = Address + "," + City + ',' + State + "," + Country;
+        var href = "https://maps.google.com/?q=" + fulla;
+        window.open(href, "_blank");
+    }
+</script>
+
+@if (@TempData["FilteredAlerts"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["FilteredAlerts"] <strong>Sell Start now !</strong>
+        
+    </div>
+}
+@*@{
+    var filteredAlerts = TempData["FilteredAlerts"] as List<AlertModal>;
+}
+
+@if (filteredAlerts != null && filteredAlerts.Any())
+{
+    <div class="alert alert-info">
+        <h4>Notifications</h4>
+        <ul>
+            @foreach (var alert in filteredAlerts)
+            {
+                <li>@alert.itemName</li>
+            }
+        </ul>
+    </div>
+}*@
+@using (Html.BeginForm("CustomerHome", "CustomerHome", FormMethod.Get))
+{
+    @Html.TextBoxFor(m => m.SearchTerm, new { @style = "padding: 10px; width: 100%;", placeholder = "Search Garages.."})
+    <input type="submit" value="Search" style="background-color: palevioletred; color: white; font-weight: bold; font-size: 17px; padding: 7px; margin-top: 5px;" />
+}
+
+<div class="container">
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    @if (Model.GarageList.Any())
+    {
+
+        @foreach (var garage in Model.GarageList)
+        {
+            <div style="color: palevioletred; font-size: 17px; font-weight: bold; padding: 10px; border: solid; border-color: palevioletred; border-width: 2px; width: 100%; border-radius: 10px; display: block; margin-top: 10px; text-decoration: none;">
+                <div style="display: flex; justify-content: space-between">
+                    <div>
+                        <label>Garage Name: @garage.GarageName.ToString()</label>
+                        <div>
+                            <a href="@Url.Action("GarageDetails", "GarageDetails", new { id = garage.Id })" style="text-decoration: none; color: palevioletred;">
+                            Address: @garage.Address, @garage.City, @garage.State, @garage.Country
+                            </a>
+                        </div>
+                    </div>
+                    <button style="background-color: palevioletred; color: white; border-radius: 5px; border: none; padding: 5px 15px;" onclick="mapOpen('@garage.Address','@garage.City', '@garage.State', '@garage.Country')">See Map</button>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No garages found for "@Model.SearchTerm".</p>
+    }
+
+    <div style="position: fixed; bottom: 0; width: 100%; background-color: palevioletred">
+        <ul style="list-style-type: none; padding-top: 10px; padding-bottom: 10px; margin: 0; display: flex; justify-content: space-around">
+            <li style="display: inline-block">
+                <a href="@Url.Action("CustomerHome", "CustomerHome")">Home</a>
+            </li>
+            <li style="display: inline-block">
+                <a href="@Url.Action("Profile", "CustomerHome")">Profile</a>
+            </li>
+        </ul>
+    </div>
+</div>

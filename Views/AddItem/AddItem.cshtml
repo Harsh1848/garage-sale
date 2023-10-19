@@ -1,0 +1,49 @@
+﻿@model GSL.Models.GarageItemModel
+
+<div class="container">
+    <h2>Add New Item</h2>
+
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    @using (Html.BeginForm("AddItem", "AddItem", FormMethod.Post))
+    {
+        <div>
+            <label asp-for="ItemName" style="font-weight: bold; color: palevioletred;">Item Name: </label>
+            <input asp-for="ItemName" placeholder="Enter your Item Name" style="color: gray;" />
+        </div>
+
+        <div>
+            <label asp-for="ItemPrice" style="font-weight: bold; color: palevioletred; margin-top: 10px;">Item Price: </label>
+            <input asp-for="ItemPrice" placeholder="Enter your Item Price" style="color: gray;" type="number"/>
+        </div>
+
+        <div>
+            <label asp-for="ItemColor" style="font-weight: bold; color: palevioletred; margin-top: 10px">Item Color: </label>
+            <input asp-for="ItemColor" placeholder="Enter your Item Color" style="color: gray;" />
+        </div>
+
+        <div>
+            <label asp-for="ItemSellingEndDate" style="font-weight: bold; color: palevioletred; margin-top: 10px">Item Selling Date: </label>
+            <input asp-for="ItemSellingEndDate" placeholder="Enter your Item Selling End Date and Time" style="color: gray;" type="datetime-local" />
+        </div>
+
+        <button type="submit" style="margin-top: 40px; color: white; background-color: palevioletred; width: 100%; padding: 10px; border: none; border-radius: 7px; font-weight: bold; font-size: 20px;">Add Item</button>
+    }
+
+    <div style="position: fixed; bottom: 0; width: 100%; background-color: palevioletred">
+        <ul style="list-style-type: none; padding-top: 10px; padding-bottom: 10px; margin: 0; display: flex; justify-content: space-around">
+            <li style="display: inline-block">
+                <a href="@Url.Action("ProviderHome", "ProviderHome")">Home</a>
+            </li>
+            <li style="display: inline-block">
+                <a href="@Url.Action("Profile", "ProviderHome")">Profile</a>
+            </li>
+        </ul>
+    </div>
+
+</div>

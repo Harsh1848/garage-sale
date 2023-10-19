@@ -1,0 +1,64 @@
+﻿@model IEnumerable<GSL.Models.GarageModel>
+<script>
+    function mapOpen(Address, City, State, Country) {
+        var fulla = Address + "," + City + ',' + State + "," + Country;
+        var href = "https://maps.google.com/?q=" + fulla;
+        window.open(href, "_blank");
+    }
+</script>
+
+<div class="container">
+    @if (@TempData["FilteredAlerts"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["FilteredAlerts"] <strong>Sell Start now !</strong>
+            
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <div style="display: flex; justify-content: center; align-items: center;">
+        @Html.ActionLink("Add Garage", "AddGarage", "ProviderHome", null, new { style = "background-color: palevioletred; color: white; padding: 10px; text-decoration: none; border-radius: 10px; margin: 20px; text-align: center; font-size: 20px;" })
+    </div>
+
+    @if (Model.Any())
+    {
+        @foreach (var garage in Model)
+        {
+            if (garage != null)
+            {
+                <div style="color: palevioletred; font-size: 17px; font-weight: bold; padding: 10px; border: solid; border-color: palevioletred; border-width: 2px; width: 100%; border-radius: 10px; display: block; margin-top: 10px; text-decoration: none;">
+                    
+                    <div style="display: flex; justify-content: space-between">
+                        <div>
+                            <label>Garage Name: @garage.GarageName.ToString()</label>
+                            <div>
+                                <a href="@Url.Action("GarageDetails", "GarageDetails", new { id = garage.Id })" style="text-decoration: none; color: palevioletred;">
+                                    Address: @garage.Address, @garage.City, @garage.State, @garage.Country
+                                </a>
+                            </div>
+                        </div>
+
+                        <button style="background-color: palevioletred; color: white; border-radius: 5px; border: none; padding: 5px 15px;" onclick="mapOpen('@garage.Address','@garage.City', '@garage.State', '@garage.Country')">See Map</button>
+                    </div>
+                </div>
+            }  
+        }
+    }
+
+    <div style="position: fixed; bottom: 0; width: 100%; background-color: palevioletred">
+        <ul style="list-style-type: none; padding-top: 10px; padding-bottom: 10px; margin: 0; display: flex; justify-content: space-around">
+            <li style="display: inline-block">
+                <a href="@Url.Action("ProviderHome", "ProviderHome")">Home</a>
+            </li>
+            <li style="display: inline-block">
+                <a href="@Url.Action("Profile", "ProviderHome")">Profile</a>
+            </li>
+        </ul>
+    </div>
+</div>
